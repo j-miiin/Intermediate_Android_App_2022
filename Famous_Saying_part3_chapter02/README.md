@@ -1,3 +1,3 @@
 ## 실행화면
 
-<img src="[이미지주소.png](https://user-images.githubusercontent.com/62470991/179026936-7879f840-419b-4fc2-97a1-fce2a3b1603e.png)" width="200" height="400"/>
+<img src="https://user-images.githubusercontent.com/62470991/179027606-39d156ba-257e-4b6c-86a7-8d3c49bbf557.png" width="400" height="800"/>
