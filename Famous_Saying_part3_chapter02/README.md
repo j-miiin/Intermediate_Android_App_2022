@@ -1,3 +1,3 @@
 ## 실행화면
 
-![Untitled](Untitled%204d3b5dd9f971483bb0efd621e085bfa3/Untitled.png)
+![image](https://user-images.githubusercontent.com/62470991/179026822-de950fa0-d768-48c7-bd7d-4f92d77d2c28.png)
