@@ -10,6 +10,7 @@ import com.google.firebase.remoteconfig.ktx.remoteConfig
 import com.google.firebase.remoteconfig.ktx.remoteConfigSettings
 import org.json.JSONArray
 import org.json.JSONObject
+import kotlin.math.absoluteValue
 
 class MainActivity : AppCompatActivity() {
 
@@ -25,7 +26,24 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        initViews()
         initData()
+    }
+
+    private fun initViews() {
+        viewPager.setPageTransformer { page, position ->
+            when {
+                position.absoluteValue >= 1.0F -> {
+                    page.alpha = 0F
+                }
+                position == 0F -> {
+                    page.alpha = 1F
+                }
+                else -> {
+                    page.alpha = 1F - 2 * position.absoluteValue
+                }
+            }
+        }
     }
 
     private fun initData() {
@@ -65,9 +83,12 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun displayQuotesPager(quotes: List<Quote>, isNameRevealed: Boolean) {
-        viewPager.adapter = QuotesPagerAdapter(
+        val adapter = QuotesPagerAdapter(
             quotes = quotes,
             isNameRevealed = isNameRevealed
         )
+
+        viewPager.adapter = adapter
+        viewPager.setCurrentItem(adapter.itemCount/2, false)    // 중앙에 위치시켜서 처음에도 왼쪽으로 스크롤 가능하도록
     }
 }
