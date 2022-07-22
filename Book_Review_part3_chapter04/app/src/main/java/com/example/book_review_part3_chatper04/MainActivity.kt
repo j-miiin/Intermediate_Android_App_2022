@@ -3,7 +3,10 @@ package com.example.book_review_part3_chatper04
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.book_review_part3_chatper04.adapter.BookAdapter
 import com.example.book_review_part3_chatper04.api.BookService
+import com.example.book_review_part3_chatper04.databinding.ActivityMainBinding
 import com.example.book_review_part3_chatper04.model.BestSellerDto
 import retrofit2.Call
 import retrofit2.Callback
@@ -12,9 +15,17 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 class MainActivity : AppCompatActivity() {
+
+    private lateinit var binding: ActivityMainBinding
+    private lateinit var adapter: BookAdapter
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+
+        setContentView(binding.root)
+
+        initRecyclerView()
 
         val retrofit = Retrofit.Builder()
             .baseUrl("https://book.interpark.com")
@@ -40,7 +51,11 @@ class MainActivity : AppCompatActivity() {
                         it.books.forEach { book ->
                             Log.d(TAG, book.toString())
                         }
+
+                        adapter.submitList(it.books)
                     }
+
+
                 }
 
                 override fun onFailure(call: Call<BestSellerDto>, t: Throwable) {
@@ -49,6 +64,13 @@ class MainActivity : AppCompatActivity() {
 
 
             })
+    }
+
+    fun initRecyclerView() {
+        adapter = BookAdapter()
+
+        binding.bookRecyclerView.layoutManager = LinearLayoutManager(this)
+        binding.bookRecyclerView.adapter = adapter
     }
 
     companion object {
