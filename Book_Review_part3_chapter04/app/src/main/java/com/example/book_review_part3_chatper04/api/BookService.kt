@@ -8,7 +8,7 @@ import retrofit2.http.Query
 
 interface BookService {
 
-    @GET("/api/search.api")
+    @GET("/api/search.api?output=json")
     fun getBookByName(
         @Query("key") apiKey: String,
         @Query("query") keyword: String
