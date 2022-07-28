@@ -3,8 +3,12 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/coding/Android Study/Intermediate_Android_App_2022/Tinder_part3_chapter05/app/src/main/res/layout/activity_like.xml" value="0.2692502532928065" />
         <entry key="..\:/coding/Android Study/Intermediate_Android_App_2022/Tinder_part3_chapter05/app/src/main/res/layout/activity_login.xml" value="0.22" />
         <entry key="..\:/coding/Android Study/Intermediate_Android_App_2022/Tinder_part3_chapter05/app/src/main/res/layout/activity_main.xml" value="0.2692502532928065" />
+        <entry key="..\:/coding/Android Study/Intermediate_Android_App_2022/Tinder_part3_chapter05/app/src/main/res/layout/activity_matched_user.xml" value="0.18070652173913043" />
+        <entry key="..\:/coding/Android Study/Intermediate_Android_App_2022/Tinder_part3_chapter05/app/src/main/res/layout/item_card.xml" value="0.2692502532928065" />
+        <entry key="..\:/coding/Android Study/Intermediate_Android_App_2022/Tinder_part3_chapter05/app/src/main/res/layout/item_matched_user.xml" value="0.18070652173913043" />
       </map>
     </option>
   </component>
