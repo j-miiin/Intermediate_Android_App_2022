@@ -1,14 +1,14 @@
 package com.example.carrot_market_part3_chapter06.home
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.carrot_market_part3_chapter06.DBKey.Companion.DB_ARTICLES
 import com.example.carrot_market_part3_chapter06.R
 import com.example.carrot_market_part3_chapter06.databinding.FragmentHomeBinding
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.ChildEventListener
@@ -62,6 +62,15 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
         fragmentHomeBinding.articleRecyclerView.layoutManager = LinearLayoutManager(context)
         fragmentHomeBinding.articleRecyclerView.adapter = articleAdapter
+
+        fragmentHomeBinding.addFloatingButton.setOnClickListener {
+//            if (auth.currentUser != null) {
+                val intent = Intent(requireContext(), AddArticleActivity::class.java)
+                startActivity(intent)
+//            } else {
+//                Snackbar.make(view, "로그인 후 사용해주세요.", Snackbar.LENGTH_LONG).show()
+//            }
+        }
 
         articelDB.addChildEventListener(listener)
     }
