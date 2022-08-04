@@ -18,9 +18,6 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
 class HomeFragment : Fragment(R.layout.fragment_home) {
 
     private lateinit var articelDB: DatabaseReference
@@ -64,12 +61,12 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         fragmentHomeBinding.articleRecyclerView.adapter = articleAdapter
 
         fragmentHomeBinding.addFloatingButton.setOnClickListener {
-//            if (auth.currentUser != null) {
+            if (auth.currentUser != null) {
                 val intent = Intent(requireContext(), AddArticleActivity::class.java)
                 startActivity(intent)
-//            } else {
-//                Snackbar.make(view, "로그인 후 사용해주세요.", Snackbar.LENGTH_LONG).show()
-//            }
+            } else {
+                Snackbar.make(view, "로그인 후 사용해주세요.", Snackbar.LENGTH_LONG).show()
+            }
         }
 
         articelDB.addChildEventListener(listener)
