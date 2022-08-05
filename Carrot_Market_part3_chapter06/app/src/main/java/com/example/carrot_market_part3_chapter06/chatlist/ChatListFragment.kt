@@ -1,45 +1,87 @@
 package com.example.carrot_market_part3_chapter06.chatlist
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.carrot_market_part3_chapter06.DBKey.Companion.CHILD_CHAT
+import com.example.carrot_market_part3_chapter06.DBKey.Companion.DB_USERS
 import com.example.carrot_market_part3_chapter06.R
-
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
+import com.example.carrot_market_part3_chapter06.chatdetail.ChatRoomActivity
+import com.example.carrot_market_part3_chapter06.databinding.FragmentChatListBinding
+import com.example.carrot_market_part3_chapter06.home.ArticleAdapter
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
 
 class ChatListFragment : Fragment(R.layout.fragment_chat_list) {
 
-    private var param1: String? = null
-    private var param2: String? = null
+    private var binding: FragmentChatListBinding? = null
+    private lateinit var chatListAdapter: ChatListAdapter
+    private val chatRoomList = mutableListOf<ChatListItem>()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
+    private val auth: FirebaseAuth by lazy {
+        Firebase.auth
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_chat_list, container, false)
-    }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-    companion object {
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            ChatListFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
+        val fragmentChatListBinding = FragmentChatListBinding.bind(view)
+        binding = fragmentChatListBinding
+
+        chatListAdapter = ChatListAdapter(onItemClicked = { chatRoom ->
+            // 채팅방으로 이동하는 코드
+            context?.let {
+                val intent = Intent(it, ChatRoomActivity::class.java)
+                intent.putExtra("chatKey", chatRoom.key)
+                startActivity(intent)
             }
+
+        })
+
+        chatRoomList.clear()
+
+        fragmentChatListBinding.chatListRecyclerView.adapter = chatListAdapter
+        fragmentChatListBinding.chatListRecyclerView.layoutManager = LinearLayoutManager(context)
+
+        if (auth.currentUser == null) {
+            return
+        }
+
+        val chatDB = Firebase.database.reference.child(DB_USERS).child(auth.currentUser!!.uid).child(CHILD_CHAT)
+
+        chatDB.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                snapshot.children.forEach {
+                    val model = it.getValue(ChatListItem::class.java)
+                    model ?: return
+
+                    chatRoomList.add(model)
+                }
+
+                chatListAdapter.submitList(chatRoomList)
+                chatListAdapter.notifyDataSetChanged()
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+            }
+
+        })
     }
+
+    override fun onResume() {
+        super.onResume()
+
+        chatListAdapter.notifyDataSetChanged()
+    }
+
 }
